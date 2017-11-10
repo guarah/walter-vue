@@ -1,14 +1,16 @@
 <template>
-  <div class="auth">
-    <h2>In Auth</h2>
-    <router-link to="/Home">Home</router-link>
+  <div class="home">
+    <h2>In Home</h2>
+    <router-link to="/Movie">Movies</router-link>
+    <router-link to="/Serie">Series</router-link>
+    <router-link to="/Other">Other</router-link>
   </div>
 </template>
 
 <script>
   export default {
     // Do not forget this little guy
-    name: 'auth',
+    name: 'home',
     // share common functionality with component mixins
     mixins: [],
     // compose new components
@@ -38,5 +40,5 @@
 </script>
 
 <style scoped>
-  .auth { /* ... */ }
+  .home { /* ... */ }
 </style>
