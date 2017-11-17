@@ -1,6 +1,8 @@
 <template>
   <div class="home">
     <h2>In Home</h2>
+    <h3><b>User: </b>{{ user.displayName }}</h3>
+    <img v-bind:src="user.photoURL">
     <router-link to="/Movie">Movies</router-link>
     <router-link to="/Serie">Series</router-link>
     <router-link to="/Other">Other</router-link>
@@ -8,6 +10,8 @@
 </template>
 
 <script>
+  import firebase from 'firebase'
+
   export default {
     // Do not forget this little guy
     name: 'home',
@@ -24,7 +28,8 @@
     // variables
     data () {
       return {
-        msg: 'Welcome to Your Vue.js PWA'
+        msg: 'Welcome to Your Vue.js PWA',
+        user: firebase.auth().currentUser
       }
     },
     computed: {},
