@@ -1,6 +1,7 @@
 <template>
   <div class="auth">
     <h2>In Auth</h2>
+    <button @click="goHome">Home</button>
     <button v-on:click="login">login</button>
   </div>
 </template>
@@ -9,37 +10,16 @@
   import firebase from 'firebase'
 
   export default {
-    // Do not forget this little guy
     name: 'auth',
-    // share common functionality with component mixins
-    mixins: [],
-    // compose new components
-    extends: {},
-    // component properties/variables
-    props: {
-      bar: {}, // Alphabetized
-      foo: {},
-      fooBar: {}
-    },
-    // variables
-    data () {
-      return {
-        msg: 'Welcome to Your Vue.js PWA'
-      }
-    },
-    computed: {},
-    // when component uses other components
-    components: {},
-    // methods
-    watch: {},
     methods: {
+      goHome () {
+        this.$router.replace('Home')
+      },
       login: function () {
         const provider = new firebase.auth.FacebookAuthProvider()
         firebase.auth().signInWithRedirect(provider)
       }
     },
-    // component Lifecycle hooks
-    beforeCreate () {},
     mounted () {
       firebase.auth().getRedirectResult().then(function (result) {
         if (result.credential) {
@@ -62,7 +42,3 @@
     }
 }
 </script>
-
-<style scoped>
-  .auth { /* ... */ }
-</style>

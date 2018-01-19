@@ -2,41 +2,26 @@
   <div class="movies">
     <h2>In Movies</h2>
     <router-link to="/Home">Home</router-link>
+    <router-link to="/Movie">Movies</router-link>
+    <router-link to="/Serie">Series</router-link>
+    <router-link to="/Other">Other</router-link>
+
+    <h2>Lista</h2>
+    <app-media-list :medias="movies"></app-media-list>
   </div>
 </template>
 
 <script>
+  import MediaList from '../media/MediaList.vue'
   export default {
-    // Do not forget this little guy
     name: 'movies',
-    // share common functionality with component mixins
-    mixins: [],
-    // compose new components
-    extends: {},
-    // component properties/variables
-    props: {
-      bar: {}, // Alphabetized
-      foo: {},
-      fooBar: {}
-    },
-    // variables
-    data () {
-      return {
-        msg: 'Welcome to Your Vue.js PWA'
+    computed: {
+      movies () {
+        return this.$store.getters.addedMovies
       }
     },
-    computed: {},
-    // when component uses other components
-    components: {},
-    // methods
-    watch: {},
-    methods: {},
-    // component Lifecycle hooks
-    beforeCreate () {},
-    mounted () {}
+    components: {
+      appMediaList: MediaList
+    }
 }
 </script>
-
-<style scoped>
-  .movies { /* ... */ }
-</style>

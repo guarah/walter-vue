@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header>
-      <center><span>Walter</span></center>
+      <center><span>App</span></center>
       <button v-on:click="logout">logut</button>
     </header>
     <main>
@@ -16,7 +16,7 @@ import firebase from 'firebase'
 export default {
   name: 'app',
   methods: {
-    logout: function () {
+    logout () {
       firebase.auth().signOut().then(() => {
         this.$router.replace('Auth')
       }, (error) => {
