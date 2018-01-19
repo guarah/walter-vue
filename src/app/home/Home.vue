@@ -3,7 +3,6 @@
     <h2>In Home</h2>
     <div v-if="user">
       <h3><b>User: </b>{{ user.displayName }}</h3>
-      <img v-bind:src="user.photoURL">
     </div>
     <router-link to="/Home">Home</router-link>
     <router-link to="/Movie">Movies</router-link>
@@ -17,19 +16,18 @@
 </template>
 
 <script>
-  import firebase from 'firebase'
+  
   import MediaList from '../media/MediaList.vue'
+  // import firebase from 'firebase'
 
   export default {
     name: 'home',
-    data () {
-      return {
-        user: firebase.auth().currentUser
-      }
-    },
     computed: {
       medias () {
         return this.$store.getters.allMedias
+      },
+      user () {
+        return this.$store.getters.user
       }
     },
     components: {

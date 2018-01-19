@@ -2,28 +2,20 @@ import Vue from 'vue'
 import router from './router'
 import firebase from 'firebase'
 import store from './store/store'
+import { firebaseConfig } from './constants.js'
+import VueResource from 'vue-resource'
 
 // Components
 import App from './App'
 import Auth from './auth/Auth.vue'
 
-// Vue.config.productionTip = false
+Vue.use(VueResource)
 
-// change to constants
+Vue.http.options.root = firebaseConfig.databaseURL
+
 // Initialize Firebase
 let app
-const config = {
-  apiKey: 'AIzaSyDxLYWHkM0pTp0EMXqvPd_dXfT0hzyCB1E',
-  authDomain: 'walter-vue.firebaseapp.com',
-  databaseURL: 'https://walter-vue.firebaseio.com',
-  projectId: 'walter-vue',
-  storageBucket: '',
-  messagingSenderId: '8128515222'
-}
-
-firebase.initializeApp(config)
-
-Vue.component('Auth', Auth)
+export const firebaseApp = firebase.initializeApp(firebaseConfig)
 
 firebase.auth().onAuthStateChanged((user) => {
   if (!app) {

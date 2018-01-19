@@ -16,7 +16,8 @@
         this.$router.replace('Home')
       },
       login: function () {
-        const provider = new firebase.auth.FacebookAuthProvider()
+        // const provider = new firebase.auth.FacebookAuthProvider()
+        const provider = new firebase.auth.GoogleAuthProvider()
         firebase.auth().signInWithRedirect(provider)
       }
     },

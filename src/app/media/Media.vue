@@ -18,6 +18,8 @@
           this.$store.dispatch('removeFromList', media)
         } else {
           this.$store.dispatch('addToList', media)
+          // to save in firebase
+          this.$http.put(`user1/addedMedias/${media.id}.json`, media)
         }
       }
     }

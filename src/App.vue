@@ -3,6 +3,7 @@
     <header>
       <center><span>App</span></center>
       <button v-on:click="logout">logut</button>
+      <img v-if="user" v-bind:src="user.photoURL">
     </header>
     <main>
       <router-view></router-view>
@@ -15,9 +16,18 @@ import firebase from 'firebase'
 
 export default {
   name: 'app',
+  computed: {
+    user () {
+      return this.$store.getters.user
+    }
+  },
+  created () {
+    this.$store.dispatch('setUser', firebase.auth().currentUser)
+  },
   methods: {
     logout () {
       firebase.auth().signOut().then(() => {
+        this.$store.dispatch('unsetUser')
         this.$router.replace('Auth')
       }, (error) => {
         console.log(error)
@@ -62,4 +72,13 @@ header span {
   box-sizing: border-box;
   padding-top: 16px;
 }
+
+img {
+  height: 40px;
+  border-radius: 50px;
+  top: 8px;
+  right: 10px;
+  position: absolute;
+}
+  
 </style>

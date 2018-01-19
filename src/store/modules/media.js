@@ -6,16 +6,18 @@ const state = {
 
 const mutations = {
   'ADD_TO_LIST' (state, media) {
-    const index = state.allMedias.indexOf(media)
-    media.added = true
-    state.allMedias.splice(index, 1, media)
-    state.addedMedias.push(media)
+    const _media = state.allMedias.find(x => x.id === media.id)
+    if (_media) {
+      _media.added = true
+      state.addedMedias.push(_media)
+    }
   },
   'REMOVE_FROM_LIST' (state, media) {
-    const index = state.allMedias.indexOf(media)
-    state.addedMedias.splice(index, 1)
-    media.added = false
-    state.allMedias.splice(index, 1, media)
+    const _media = state.allMedias.find(x => x.id === media.id)
+    if (_media) {
+      _media.added = false
+      state.addedMedias.splice(state.addedMedias.indexOf(_media))
+    }
   },
   'SET_WATCHED' (state, media) {
 
