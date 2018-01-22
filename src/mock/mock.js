@@ -17,7 +17,7 @@
 
 // - Serie, Filme, outro -> Home, Auth
 
-export const medias = [
+export const mediasMock = [
   {
     id: 1,
     name: 'Media 1',

@@ -13,6 +13,7 @@
 
 <script>
 import firebase from 'firebase'
+import * as mediaService from './app/media/MediaService.js'
 
 export default {
   name: 'app',
@@ -22,7 +23,21 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('setUser', firebase.auth().currentUser)
+    const user = firebase.auth().currentUser
+    if (user) {
+      this.$store.dispatch('setUser', user)
+      mediaService.getAddedMedias(user)
+        .then(response => {
+          if (response.ok) {
+            const addedMedias = response.data.filter(x => x)
+            this.$store.dispatch('listAddedMedias', addedMedias)
+          }
+        })
+        .catch(error => {
+          alert(error)
+          console.log('Error', error)
+        })
+    }
   },
   methods: {
     logout () {
