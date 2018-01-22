@@ -6,3 +6,5 @@ export const firebaseConfig = {
   storageBucket: '',
   messagingSenderId: '8128515222'
 }
+
+export const API_TMDB_KEY = 'b05f7a180e13978b2e69b5ed5df67da1'

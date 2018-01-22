@@ -1,6 +1,7 @@
 <template>
   <div class="media-card">
       <h2 class="title">Title: {{media.name}}</h2>
+      <img :src="media.image" alt="">
       <p class="genre">Genre: {{media.genre}}</p>
       <p class="description">{{media.description}}</p>
       <p class="media_type">{{media.media_type}}</p>

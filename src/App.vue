@@ -29,7 +29,10 @@ export default {
       mediaService.getAddedMedias(user)
         .then(response => {
           if (response.ok) {
-            const addedMedias = response.data.filter(x => x)
+            let addedMedias = []
+            for (var i in response.data) {
+              addedMedias.push(response.data[i])
+            }
             this.$store.dispatch('listAddedMedias', addedMedias)
           }
         })
@@ -53,9 +56,13 @@ export default {
 </script>
 
 <style>
-body {
-  margin: 0;
-}
+  body {
+    margin: 0;
+  }
+</style>
+
+
+<style scoped>
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

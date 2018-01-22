@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { API_TMDB_KEY } from '../../constants'
 
 function getAddedMedias (user) {
   return new Promise((resolve, reject) => {
@@ -24,8 +25,21 @@ function removeFromList (user, media) {
   })
 }
 
+function search (searchText) {
+  const query = searchText.replace('', '+')
+  return fetch(`https://api.themoviedb.org/3/search/multi?page=1&api_key=${API_TMDB_KEY}&query=${query}`)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      return responseJson
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
+
 export {
   addToList,
   getAddedMedias,
-  removeFromList
+  removeFromList,
+  search
 }
