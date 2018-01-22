@@ -1,4 +1,3 @@
-import { mediasMock } from '../../mock/mock'
 import * as mediaService from '../../app/media/MediaService'
 const state = {
   allMedias: [],
@@ -72,17 +71,6 @@ const actions = {
   },
   searchedMedias: ({commit, getters}, searchedMedias) => {
     const medias = searchedMedias.map((item) => {
-      const mediaAdded = getters.addedMedias.find(x => x.id === item.id)
-      if (mediaAdded) {
-        item.added = true
-      }
-      return item
-    })
-    commit('SET_ALL_MEDIAS', medias)
-  },
-  // temp
-  listAllMedias: ({commit, getters}) => {
-    const medias = mediasMock.map((item) => {
       const mediaAdded = getters.addedMedias.find(x => x.id === item.id)
       if (mediaAdded) {
         item.added = true

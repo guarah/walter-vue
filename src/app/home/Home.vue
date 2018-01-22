@@ -1,18 +1,36 @@
 <template>
   <div class="home">
-    <h2>In Home</h2>
-    <div v-if="user">
-      <h3><b>User: </b>{{ user.displayName }}</h3>
-    </div>
-    <router-link to="/Home">Home</router-link>
-    <router-link to="/Movie">Movies</router-link>
-    <router-link to="/Serie">Series</router-link>
-    <router-link to="/Other">Other</router-link>
 
-    <h2>lista de itens</h2>
-    <button @click="listar">Listar</button>
-    <input type="text" placeholder="Search..." v-model="searchText">
-    <app-media-list :medias="medias"></app-media-list>
+    <div class="first">
+      <h2>Home</h2>
+      <div v-if="user">
+        <h3><b>User: </b>{{ user.displayName }}</h3>
+      </div>
+
+      <v-text-field label="Search" v-model="searchText"></v-text-field>
+    </div>
+
+    <app-media-list :medias="medias" class="media-list-home"></app-media-list>
+
+    <v-bottom-nav absolute :value="true" :active.sync="e1" color="transparent">
+      <v-btn flat color="teal" value="home" @click="go('Home')">
+        <span>Home</span>
+        <v-icon>home</v-icon>
+      </v-btn>
+      <v-btn flat color="teal" value="movie" @click="go('Movie')">
+        <span>Movies</span>
+        <v-icon>favorite</v-icon>
+      </v-btn>
+      <v-btn flat color="teal" value="serie" @click="go('Serie')">
+        <span>Series</span>
+        <v-icon>place</v-icon>
+      </v-btn>
+      <v-btn flat color="teal" value="other" @click="go('Other')">
+        <span>Others</span>
+        <v-icon>place</v-icon>
+      </v-btn>
+    </v-bottom-nav>
+
   </div>
 </template>
 
@@ -27,7 +45,8 @@
     data: function () {
       return {
         searchText: '',
-        time: null
+        time: null,
+        e1: 'home'
       }
     },
     watch: {
@@ -49,7 +68,7 @@
                     media_type: val.media_type === 'tv' ? 'serie' : val.media_type,
                     added: false,
                     watched: false,
-                    image: 'https://image.tmdb.org/t/p/w300/' + val.poster_path
+                    image: val.poster_path ? `https://image.tmdb.org/t/p/w300/${val.poster_path}` : null
                   }
                   acc.push(media)
                   return acc
@@ -72,9 +91,25 @@
       appMediaList: MediaList
     },
     methods: {
-      listar () {
-        this.$store.dispatch('listAllMedias')
+      go (where) {
+        this.$router.push({name: where})
       }
     }
 }
 </script>
+
+<style scoped>
+  .home {
+    width: 100%;
+  }
+  .first {
+    margin: auto;
+    width: 90%;
+  }
+  .media-list-home {
+    height: 56vh;
+    overflow: auto;
+    overflow-x: hidden;
+  }
+</style>
+

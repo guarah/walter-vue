@@ -1,13 +1,19 @@
 <template>
   <div id="app">
-    <header>
-      <center><span>App</span></center>
-      <button v-on:click="logout">logut</button>
-      <img v-if="user" v-bind:src="user.photoURL">
-    </header>
-    <main>
-      <router-view></router-view>
-    </main>
+    <v-app>
+      <v-toolbar dark color="primary">
+        <v-btn icon @click="logout">
+          <v-icon>power_settings_new</v-icon>
+        </v-btn>
+        <v-toolbar-title class="white--text">App - View</v-toolbar-title>
+        <v-avatar v-if="user" :tile="false" :size="'40px'" class="grey lighten-4 avatar">
+          <img v-bind:src="user.photoURL" alt="avatar">
+        </v-avatar>
+      </v-toolbar>
+      <main>
+        <router-view></router-view>
+      </main>
+    </v-app>
   </div>
 </template>
 
@@ -95,12 +101,18 @@ header span {
   padding-top: 16px;
 }
 
-img {
+.avatar {
+  top: 8px;
+  right: 10px;
+  position: absolute;
+}
+
+/* img {
   height: 40px;
   border-radius: 50px;
   top: 8px;
   right: 10px;
   position: absolute;
-}
+} */
   
 </style>

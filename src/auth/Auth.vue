@@ -18,6 +18,12 @@
       login: function () {
         // const provider = new firebase.auth.FacebookAuthProvider()
         const provider = new firebase.auth.GoogleAuthProvider()
+        provider.setCustomParameters({
+          prompt: 'select_account'
+        })
+        provider.addScope('profile')
+        provider.addScope('email')
+        // firebase.auth().signInWithPopup(provider)
         firebase.auth().signInWithRedirect(provider)
       }
     },
