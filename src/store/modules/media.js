@@ -1,44 +1,77 @@
 import * as mediaService from '../../app/media/MediaService'
 const state = {
-  allMedias: [],
-  addedMedias: []
+  searchedMedias: [],
+  suggestions: [],
+  myMedias: [],
+  rewatchMedias: []
 }
 
 const mutations = {
+  'DEFINE_SUGGESTIONS' (state, suggestions) {
+    state.suggestions = suggestions
+  },
+
   'ADD_TO_LIST' (state, media) {
-    const _media = state.allMedias.find(x => x.id === media.id)
-    if (_media) {
-      state.addedMedias.push(_media)
+    const stored = state.myMedias.find(x => x.id === media.id)
+    if (!stored) {
+      state.myMedias.unshift(media)
     }
   },
   'REMOVE_FROM_LIST' (state, media) {
-    const _media = state.addedMedias.find(x => x.id === media.id)
+    const _media = state.myMedias.find(x => x.id === media.id)
     if (_media) {
       media.added = false
-      state.addedMedias.splice(state.addedMedias.indexOf(_media), 1)
+      state.myMedias.splice(state.myMedias.indexOf(_media), 1)
     }
   },
   'SET_WATCHED' (state, media) {
-
   },
   'UNSET_WATCHED' (state, media) {
+  },
 
+  'SET_SEARCHED_MEDIAS' (state, medias) {
+    state.searchedMedias = medias
   },
-  'SET_ALL_MEDIAS' (state, medias) {
-    state.allMedias = medias
+  'CLEAR_SEARCHED_MEDIAS' (state) {
+    state.searchedMedias = []
   },
-  'SET_ADDED_MEDIAS' (state, medias) {
-    state.addedMedias = medias
+
+  'SET_SUGGESTED_MEDIAS' (state, medias) {
+    state.suggestions = medias
+  },
+
+  'SET_MY_MEDIAS' (state, medias) {
+    state.myMedias = medias
+  },
+
+  'SET_REWATCH_MEDIAS' (state, medias) {
+    state.rewatchMedias = medias
   }
+
 }
 
 const actions = {
+  searchMedias ({commit}, searchValue) {
+    mediaService.search(searchValue)
+      .then(medias => commit('SET_SEARCHED_MEDIAS', medias))
+  },
+  clearSearchedMedias: ({commit}) => {
+    commit('CLEAR_SEARCHED_MEDIAS')
+  },
+
+  defineSuggestions ({commit}) {
+    mediaService.getSuggestions()
+      .then(medias => commit('DEFINE_SUGGESTIONS', medias))
+    // por enquanto vai sugerir só os populares, fazer um random de todas as possibilidades https://www.themoviedb.org/documentation/api/discover
+  },
+
   setWatched: ({commit}, media) => {
     commit('SET_WATCHED', media)
   },
   unSetWatched: ({commit}, media) => {
     commit('UNSET_WATCHED', media)
   },
+
   addToList: ({commit, getters}, media) => {
     media.added = true
     const user = getters.user
@@ -66,37 +99,33 @@ const actions = {
         })
     }
   },
-  listAddedMedias: ({commit}, medias) => {
-    commit('SET_ADDED_MEDIAS', medias)
-  },
-  searchedMedias: ({commit, getters}, searchedMedias) => {
-    const medias = searchedMedias.map((item) => {
-      const mediaAdded = getters.addedMedias.find(x => x.id === item.id)
+
+  listMyMedias: ({commit}, medias) => {
+    commit('SET_MY_MEDIAS', medias)
+  }
+}
+
+const getters = {
+  searchedMedias: (state, getters) => {
+    return state.searchedMedias.map((item) => {
+      const mediaAdded = getters.myMedias.find(x => x.id === item.id)
       if (mediaAdded) {
         item.added = true
       }
       return item
     })
-    commit('SET_ALL_MEDIAS', medias)
-  }
-}
-
-const getters = {
-  allMedias: state => {
-    return state.allMedias
   },
-  addedMedias: state => {
-    // return state.allMedias.filter(x => x.added)
-    return state.addedMedias
+  suggestions: (state, getters) => {
+    return state.suggestions.map((item) => {
+      item.added = !!getters.myMedias.find(x => x.id === item.id)
+      return item
+    })
   },
-  addedMovies: state => {
-    return state.addedMedias.filter(x => x.media_type === 'movie')
+  myMedias: state => {
+    return state.myMedias
   },
-  addedSeries: state => {
-    return state.addedMedias.filter(x => x.media_type === 'serie')
-  },
-  addedOthers: state => {
-    return state.addedMedias.filter(x => x.media_type === 'other')
+  rewatchMedias: state => {
+    return state.rewatchMedias
   }
 }
 

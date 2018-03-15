@@ -1,22 +1,41 @@
 <template>
-  <div class="auth">
-    <h2>In Auth</h2>
-    <button @click="goHome">Home</button>
-    <button v-on:click="login">login</button>
+  <div class="auth text-md-center">
+    <h2>Meu nome é Walter</h2>
+    <p>Faça seu login</p>
+    <v-btn @click="googleLogin" outline color="indigo"><icon name="google"></icon></v-btn>
+    <v-btn @click="facebookLogin" outline color="indigo"><icon name="facebook"></icon></v-btn>
   </div>
 </template>
 
 <script>
   import firebase from 'firebase'
+  // or import all icons if you don't care about bundle size
+  import 'vue-awesome/icons'
+
+  import Icon from 'vue-awesome/components/Icon'
 
   export default {
-    name: 'auth',
+    components: {
+      Icon
+    },
+
     methods: {
       goHome () {
         this.$router.replace('Home')
       },
-      login: function () {
-        // const provider = new firebase.auth.FacebookAuthProvider()
+
+      facebookLogin () {
+        const provider = new firebase.auth.FacebookAuthProvider()
+        provider.setCustomParameters({
+          prompt: 'select_account'
+        })
+        provider.addScope('profile')
+        provider.addScope('email')
+        // firebase.auth().signInWithPopup(provider)
+        firebase.auth().signInWithRedirect(provider)
+      },
+
+      googleLogin () {
         const provider = new firebase.auth.GoogleAuthProvider()
         provider.setCustomParameters({
           prompt: 'select_account'
@@ -27,6 +46,7 @@
         firebase.auth().signInWithRedirect(provider)
       }
     },
+
     mounted () {
       firebase.auth().getRedirectResult().then(function (result) {
         if (result.credential) {

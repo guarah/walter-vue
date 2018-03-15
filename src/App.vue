@@ -1,18 +1,23 @@
 <template>
   <div id="app">
     <v-app>
-      <v-toolbar dark color="primary">
+
+      <v-toolbar class="toolbar">
         <v-btn icon @click="logout">
           <v-icon>power_settings_new</v-icon>
         </v-btn>
-        <v-toolbar-title class="white--text">App - View</v-toolbar-title>
+        <v-toolbar-title class="white--text">Walter</v-toolbar-title>
         <v-avatar v-if="user" :tile="false" :size="'40px'" class="grey lighten-4 avatar">
           <img v-bind:src="user.photoURL" alt="avatar">
         </v-avatar>
       </v-toolbar>
-      <main>
-        <router-view></router-view>
-      </main>
+
+      <v-content>
+        <v-container fluid>
+          <router-view></router-view>
+        </v-container>
+      </v-content>
+
     </v-app>
   </div>
 </template>
@@ -22,33 +27,37 @@ import firebase from 'firebase'
 import * as mediaService from './app/media/MediaService.js'
 
 export default {
-  name: 'app',
   computed: {
     user () {
       return this.$store.getters.user
     }
   },
   created () {
-    const user = firebase.auth().currentUser
-    if (user) {
-      this.$store.dispatch('setUser', user)
-      mediaService.getAddedMedias(user)
-        .then(response => {
-          if (response.ok) {
-            let addedMedias = []
-            for (var i in response.data) {
-              addedMedias.push(response.data[i])
-            }
-            this.$store.dispatch('listAddedMedias', addedMedias)
-          }
-        })
-        .catch(error => {
-          alert(error)
-          console.log('Error', error)
-        })
-    }
+    this.loadInicialMedias()
   },
   methods: {
+    loadInicialMedias () {
+      // refatorar para só chamar a action aqui e fazer tudo lá
+      const user = firebase.auth().currentUser
+      if (user) {
+        this.$store.dispatch('setUser', user)
+        mediaService.getMyMedias(user)
+          .then(response => {
+            if (response.ok) {
+              let myMedias = []
+              for (var i in response.data) {
+                myMedias.push(response.data[i])
+              }
+              this.$store.dispatch('listMyMedias', myMedias)
+              this.$store.dispatch('defineSuggestions')
+            }
+          })
+          .catch(error => {
+            alert(error)
+            console.log('Error', error)
+          })
+      }
+    },
     logout () {
       firebase.auth().signOut().then(() => {
         this.$store.dispatch('unsetUser')
@@ -77,28 +86,14 @@ export default {
   color: #2c3e50;
 }
 
+.toolbar {
+  background-color: black;
+  color: red;
+}
+
 main {
   text-align: center;
   margin-top: 40px;
-}
-
-header {
-  margin: 0;
-  height: 56px;
-  padding: 0 16px 0 24px;
-  background-color: #35495E;
-  color: #ffffff;
-}
-
-header span {
-  display: block;
-  position: relative;
-  font-size: 20px;
-  line-height: 1;
-  letter-spacing: .02em;
-  font-weight: 400;
-  box-sizing: border-box;
-  padding-top: 16px;
 }
 
 .avatar {
@@ -107,12 +102,4 @@ header span {
   position: absolute;
 }
 
-/* img {
-  height: 40px;
-  border-radius: 50px;
-  top: 8px;
-  right: 10px;
-  position: absolute;
-} */
-  
 </style>

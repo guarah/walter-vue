@@ -1,17 +1,17 @@
 <template>
-  <!-- <div class="media-list">
-    
-  </div> -->
-  <v-container fluid style="min-height: 0;" grid-list-lg>
-    <app-media v-for="media in medias" :key="media.name" :media="media"></app-media>
-  </v-container>
+  <div>
+    <h1>{{title}}</h1>
+    <v-container fluid style="min-height: 0;" grid-list-lg class="list-style">
+      <app-media v-for="media in medias" :key="media.id" :media="media" style="margin: 1px;"></app-media>
+    </v-container>
+  </div>
 </template>
 
 <script>
   import Media from '../media/Media.vue'
 
   export default {
-    props: ['medias'],
+    props: ['medias', 'title'],
     components: {
       appMedia: Media
     }
@@ -19,8 +19,11 @@
 </script>
 
 <style scoped>
-  .media-list {
-    height: 63vh;
-    overflow: auto;
+  .list-style {
+    min-height: 0px;
+    width: auto;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    display: flex;
   }
 </style>

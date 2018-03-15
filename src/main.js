@@ -5,6 +5,7 @@ import store from './store/store'
 import { firebaseConfig } from './constants.js'
 import VueResource from 'vue-resource'
 import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
 
 // Components
 import App from './App'
@@ -12,8 +13,6 @@ import Auth from './auth/Auth.vue'
 
 Vue.use(VueResource)
 Vue.use(Vuetify)
-
-import('../node_modules/vuetify/dist/vuetify.min.css')
 
 Vue.http.options.root = firebaseConfig.databaseURL
 

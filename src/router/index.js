@@ -14,15 +14,47 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'history',
   routes: [
-    { path: '*', redirect: { name: 'Auth' } },
-    { path: '/', redirect: { name: 'Auth' } },
-    { path: 'Auth', name: 'Auth', component: Auth },
-    // Home
-    { path: '/Home', name: 'Home', component: Home, meta: { requiresAuth: true } },
-    // { path: '/Home', name: 'Home', component: Home },
-    { path: '/Movie', name: 'Movie', component: Movie, meta: { requiresAuth: true } },
-    { path: '/Serie', name: 'Serie', component: Serie, meta: { requiresAuth: true } },
-    { path: '/Other', name: 'Other', component: Other, meta: { requiresAuth: true } }
+    {
+      path: '*',
+      redirect: {
+        name: 'Auth'
+      }
+    },
+    {
+      path: '/',
+      redirect: {
+        name: 'Auth'
+      }
+    },
+    {
+      path: 'Auth',
+      name: 'Auth',
+      component: Auth
+    },
+    {
+      path: '/Home',
+      name: 'Home',
+      component: Home,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/Movie',
+      name: 'Movie',
+      component: Movie,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/Serie',
+      name: 'Serie',
+      component: Serie,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/Other',
+      name: 'Other',
+      component: Other,
+      meta: { requiresAuth: true }
+    }
   ]
 })
 
