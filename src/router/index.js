@@ -5,6 +5,7 @@ import firebase from 'firebase'
 // Components
 import Auth from '@/auth/Auth'
 import Home from '@/app/home/Home'
+import MediaDetail from '@/app/media/MediaDetail'
 import Movie from '@/app/movie/Movie'
 import Serie from '@/app/serie/Serie'
 import Other from '@/app/other/Other'
@@ -53,6 +54,12 @@ const router = new VueRouter({
       path: '/Other',
       name: 'Other',
       component: Other,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/Detail',
+      name: 'MediaDetail',
+      component: MediaDetail,
       meta: { requiresAuth: true }
     }
   ]

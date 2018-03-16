@@ -3,7 +3,8 @@ const state = {
   searchedMedias: [],
   suggestions: [],
   myMedias: [],
-  rewatchMedias: []
+  rewatchMedias: [],
+  selectedMedia: null
 }
 
 const mutations = {
@@ -27,6 +28,9 @@ const mutations = {
   'SET_WATCHED' (state, media) {
   },
   'UNSET_WATCHED' (state, media) {
+  },
+  'SELECT_MEDIA' (state, media) {
+    state.selectedMedia = media
   },
 
   'SET_SEARCHED_MEDIAS' (state, medias) {
@@ -70,6 +74,9 @@ const actions = {
   },
   unSetWatched: ({commit}, media) => {
     commit('UNSET_WATCHED', media)
+  },
+  selectMedia: ({commit}, media) => {
+    commit('SELECT_MEDIA', media)
   },
 
   addToList: ({commit, getters}, media) => {
@@ -126,7 +133,8 @@ const getters = {
   },
   rewatchMedias: state => {
     return state.rewatchMedias
-  }
+  },
+  selectedMedia: state => state.selectedMedia
 }
 
 export default {

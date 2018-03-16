@@ -14,12 +14,18 @@ import Auth from './auth/Auth.vue'
 Vue.use(VueResource)
 Vue.use(Vuetify)
 
+Vue.mixin({
+  methods: {
+    go (where) {
+      this.$router.push({name: where})
+    }
+  }
+})
+
 Vue.http.options.root = firebaseConfig.databaseURL
 
-// Initialize Firebase
 let app
-export const firebaseApp = firebase.initializeApp(firebaseConfig)
-
+firebase.initializeApp(firebaseConfig)
 firebase.auth().onAuthStateChanged((user) => {
   if (!app) {
     /* eslint-disable no-new */

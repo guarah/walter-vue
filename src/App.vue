@@ -37,7 +37,6 @@ export default {
   },
   methods: {
     loadInicialMedias () {
-      // refatorar para só chamar a action aqui e fazer tudo lá
       const user = firebase.auth().currentUser
       if (user) {
         this.$store.dispatch('setUser', user)

@@ -2,7 +2,12 @@
   <div>
     <h1>{{title}}</h1>
     <v-container fluid style="min-height: 0;" grid-list-lg class="list-style">
-      <app-media v-for="media in medias" :key="media.id" :media="media" style="margin: 1px;"></app-media>
+      <app-media
+        v-for="media in medias"
+        :key="media.id"
+        :media="media"
+        @click.native="selectMedia(media)"
+        style="margin: 1px;"></app-media>
     </v-container>
   </div>
 </template>
@@ -14,6 +19,12 @@
     props: ['medias', 'title'],
     components: {
       appMedia: Media
+    },
+    methods: {
+      selectMedia (media) {
+        this.$store.dispatch('selectMedia', media)
+        this.go('MediaDetail')
+      }
     }
   }
 </script>
