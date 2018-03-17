@@ -2,12 +2,13 @@
   <div>
     <h1>{{title}}</h1>
     <v-container fluid style="min-height: 0;" grid-list-lg class="list-style">
-      <app-media
+      <media
         v-for="media in medias"
         :key="media.id"
         :media="media"
         @click.native="selectMedia(media)"
-        style="margin: 1px;"></app-media>
+        style="margin: 1px;"
+      />
     </v-container>
   </div>
 </template>
@@ -16,9 +17,19 @@
   import Media from '../media/Media.vue'
 
   export default {
-    props: ['medias', 'title'],
+    props: {
+      medias: {
+        type: Array,
+        required: true
+      },
+      title: {
+        type: String,
+        required: false,
+        default: null
+      }
+    },
     components: {
-      appMedia: Media
+      Media
     },
     methods: {
       selectMedia (media) {

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import router from './router'
 import firebase from 'firebase'
 import store from './store/store'
-import { firebaseConfig } from './constants.js'
+import { firebaseConfig } from './lib/constants'
 import VueResource from 'vue-resource'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader

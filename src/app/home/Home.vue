@@ -19,7 +19,6 @@
 
     <app-media-list title="My list" v-if="myMedias.length > 0" :medias="myMedias"></app-media-list>
 
-    <!-- Rewatch -->
     <app-media-list title="Watch again" v-if="rewatchMedias.length > 0" :medias="rewatchMedias"></app-media-list>
 
   </div>
@@ -32,8 +31,7 @@
     data: function () {
       return {
         searchText: '',
-        time: null,
-        e1: 'home'
+        time: null
       }
     },
     watch: {

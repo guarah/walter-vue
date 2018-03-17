@@ -1,23 +1,12 @@
 <template>
   <div id="app">
     <v-app>
-
-      <v-toolbar class="toolbar">
-        <v-btn icon @click="logout">
-          <v-icon>power_settings_new</v-icon>
-        </v-btn>
-        <v-toolbar-title class="white--text">Walter</v-toolbar-title>
-        <v-avatar v-if="user" :tile="false" :size="'40px'" class="grey lighten-4 avatar">
-          <img v-bind:src="user.photoURL" alt="avatar">
-        </v-avatar>
-      </v-toolbar>
-
+      <app-bar :user="user"/>
       <v-content>
         <v-container fluid>
           <router-view></router-view>
         </v-container>
       </v-content>
-
     </v-app>
   </div>
 </template>
@@ -25,8 +14,12 @@
 <script>
 import firebase from 'firebase'
 import * as mediaService from './app/media/MediaService.js'
+import AppBar from './app/appBar/AppBar'
 
 export default {
+  components: {
+    AppBar
+  },
   computed: {
     user () {
       return this.$store.getters.user
@@ -56,14 +49,6 @@ export default {
             console.log('Error', error)
           })
       }
-    },
-    logout () {
-      firebase.auth().signOut().then(() => {
-        this.$store.dispatch('unsetUser')
-        this.$router.replace('Auth')
-      }, (error) => {
-        console.log(error)
-      })
     }
   }
 }
@@ -85,20 +70,9 @@ export default {
   color: #2c3e50;
 }
 
-.toolbar {
-  background-color: black;
-  color: red;
-}
-
 main {
   text-align: center;
   margin-top: 40px;
-}
-
-.avatar {
-  top: 8px;
-  right: 10px;
-  position: absolute;
 }
 
 </style>
