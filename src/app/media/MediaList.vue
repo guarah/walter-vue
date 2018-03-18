@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>{{title}}</h1>
-    <v-container fluid style="min-height: 0;" grid-list-lg class="list-style">
+    <div class="list-style">
       <media
         v-for="media in medias"
         :key="media.id"
@@ -9,7 +9,7 @@
         @click.native="selectMedia(media)"
         style="margin: 1px;"
       />
-    </v-container>
+    </div>
   </div>
 </template>
 
@@ -42,10 +42,11 @@
 
 <style scoped>
   .list-style {
-    min-height: 0px;
-    width: auto;
     overflow-x: scroll;
     overflow-y: hidden;
     display: flex;
+    padding: 5px;
+    width: 98%;
+    margin: auto;
   }
 </style>
