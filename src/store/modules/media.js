@@ -32,6 +32,9 @@ const mutations = {
   'SELECT_MEDIA' (state, media) {
     state.selectedMedia = media
   },
+  'UNSELECT_MEDIA' (state) {
+    state.selectedMedia = null
+  },
 
   'SET_SEARCHED_MEDIAS' (state, medias) {
     state.searchedMedias = medias
@@ -77,6 +80,9 @@ const actions = {
   },
   selectMedia: ({commit}, media) => {
     commit('SELECT_MEDIA', media)
+  },
+  unSelectMedia: ({commit}) => {
+    commit('UNSELECT_MEDIA')
   },
 
   addToList: ({commit, getters}, media) => {

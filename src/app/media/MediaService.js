@@ -48,11 +48,9 @@ function transformMedias (mediasJson) {
       const media = {
         id: val.id,
         name: val.media_type === 'tv' ? val.name : val.title,
-        genre: 'genre',
+        vote_average: val.vote_average,
         description: val.overview,
         media_type: val.media_type === 'tv' ? 'serie' : val.media_type,
-        added: false,
-        watched: false,
         image: val.poster_path ? `https://image.tmdb.org/t/p/w300/${val.poster_path}` : null
       }
       acc.push(media)

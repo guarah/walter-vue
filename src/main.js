@@ -16,8 +16,8 @@ Vue.use(Vuetify)
 
 Vue.mixin({
   methods: {
-    go (where) {
-      this.$router.push({name: where})
+    go (where, params) {
+      this.$router.push({name: where, params: params})
     }
   }
 })

@@ -6,6 +6,7 @@ import firebase from 'firebase'
 import Auth from '@/auth/Auth'
 import Home from '@/app/home/Home'
 import MediaDetail from '@/app/media/MediaDetail'
+import ListView from '@/app/media/ListView'
 import Movie from '@/app/movie/Movie'
 import Serie from '@/app/serie/Serie'
 import Other from '@/app/other/Other'
@@ -35,7 +36,20 @@ const router = new VueRouter({
     {
       path: '/Home',
       name: 'Home',
-      component: Home,
+      components: {
+        default: Home,
+        modal: MediaDetail
+      },
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/ListView',
+      name: 'ListView',
+      components: {
+        default: ListView,
+        modal: MediaDetail
+      },
+      props: true,
       meta: { requiresAuth: true }
     },
     {
@@ -54,12 +68,6 @@ const router = new VueRouter({
       path: '/Other',
       name: 'Other',
       component: Other,
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/Detail',
-      name: 'MediaDetail',
-      component: MediaDetail,
       meta: { requiresAuth: true }
     }
   ]

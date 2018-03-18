@@ -18,16 +18,7 @@
 
 <script>
   export default {
-    props: ['media'],
-    methods: {
-      updateList (media) {
-        if (media.added) {
-          this.$store.dispatch('removeFromList', media)
-        } else {
-          this.$store.dispatch('addToList', media)
-        }
-      }
-    }
+    props: ['media']
   }
 </script>
 

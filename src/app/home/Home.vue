@@ -1,33 +1,64 @@
 <template>
   <div class="home">
 
-    <div class="first">
-      <h2>Welcome, {{user.displayName}}!</h2>
+    <div>
+      <div class="first">
+        <h2>Welcome, {{user.displayName}}!</h2>
 
-      <div class="search-bar">
-        <v-text-field class="search-input" label="Search for series, movies..." v-model="searchText"></v-text-field>
-        <v-btn v-if="searchedMedias.length > 0" @click="clearSearchedMedias" class="search-close" flat icon color="black">
-          <v-icon>close</v-icon>
-        </v-btn>
+        <div class="search-bar">
+          <v-text-field class="search-input" label="Search for series, movies..." v-model="searchText"></v-text-field>
+          <v-btn v-if="searchedMedias.length > 0" @click="clearSearchedMedias" class="search-close" flat icon color="black">
+            <v-icon>close</v-icon>
+          </v-btn>
+        </div>
+
       </div>
 
+      <media-list
+        v-if="searchView"
+        listId="searchedMedias"
+        title="Results..."
+        :medias="searchedMedias"
+        @selectedList="onSelectedList($event)"
+      />
+
+      <media-list
+        v-if="!searchView && suggestions.length > 0"
+        listId="suggestions"
+        title="Suggested"
+        :medias="suggestions"
+        @selectedList="onSelectedList($event)"
+      />
+
+      <media-list
+        v-if="myMedias.length > 0"
+        listId="myMedias"
+        title="My list"
+        :medias="myMedias"
+        @selectedList="onSelectedList($event)"
+      />
+
+      <media-list
+        v-if="rewatchMedias.length > 0"
+        listId="rewatchMedias"
+        title="Watch again"
+        :medias="rewatchMedias"
+        @selectedList="onSelectedList($event)"
+      />
     </div>
-
-    <app-media-list title="Results..." v-if="searchView" :medias="searchedMedias"></app-media-list>
-
-    <app-media-list title="Suggested" v-if="!searchView && suggestions.length > 0" :medias="suggestions"></app-media-list>
-
-    <app-media-list title="My list" v-if="myMedias.length > 0" :medias="myMedias"></app-media-list>
-
-    <app-media-list title="Watch again" v-if="rewatchMedias.length > 0" :medias="rewatchMedias"></app-media-list>
 
   </div>
 </template>
 
 <script>
   import MediaList from '../media/MediaList.vue'
+  import MediaDetail from '../media/MediaDetail.vue'
 
   export default {
+    components: {
+      MediaList,
+      MediaDetail
+    },
     data: function () {
       return {
         searchText: '',
@@ -64,15 +95,18 @@
       },
       searchView () {
         return this.searchedMedias.length > 0
+      },
+      selectedMedia () {
+        return this.$store.getters.selectedMedia
       }
-    },
-    components: {
-      appMediaList: MediaList
     },
     methods: {
       clearSearchedMedias () {
         this.searchText = ''
         this.$store.dispatch('clearSearchedMedias')
+      },
+      onSelectedList (event) {
+        this.go('ListView', event)
       }
     }
 }

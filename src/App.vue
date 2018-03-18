@@ -1,10 +1,12 @@
 <template>
   <div id="app">
     <v-app>
-      <app-bar :user="user"/>
+      <app-bar :user="user" :class="{'blur-style': selectedMedia}"/>
       <v-content>
 
-          <router-view></router-view>
+          <router-view :class="{'blur-style': selectedMedia}"></router-view>
+
+          <router-view v-if="selectedMedia" name="modal"></router-view>
 
       </v-content>
     </v-app>
@@ -23,6 +25,9 @@ export default {
   computed: {
     user () {
       return this.$store.getters.user
+    },
+    selectedMedia () {
+      return this.$store.getters.selectedMedia
     }
   },
   created () {
@@ -61,7 +66,7 @@ export default {
 </style>
 
 
-<style scoped>
+<style>
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -73,6 +78,15 @@ export default {
 main {
   text-align: center;
   margin-top: 40px;
+}
+
+.blur-style {
+  position: fixed;
+  filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='3');
+  -webkit-filter: url(#blur-filter);
+  filter: url(#blur-filter);
+  -webkit-filter: blur(3px);
+  filter: blur(3px);
 }
 
 </style>
