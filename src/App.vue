@@ -3,19 +3,15 @@
     <v-app>
       <app-bar :user="user" :class="{'blur-style': selectedMedia}"/>
       <v-content>
-
-          <router-view :class="{'blur-style': selectedMedia}"></router-view>
-
-          <router-view v-if="selectedMedia" name="modal"></router-view>
-
+        <router-view :class="{'blur-style': selectedMedia}"></router-view>
+        <router-view v-if="selectedMedia" name="modal"></router-view>
       </v-content>
     </v-app>
   </div>
 </template>
 
 <script>
-import firebase from 'firebase'
-import * as mediaService from './app/media/MediaService.js'
+import * as appService from './appService'
 import AppBar from './app/appBar/AppBar'
 
 export default {
@@ -31,30 +27,7 @@ export default {
     }
   },
   created () {
-    this.loadInicialMedias()
-  },
-  methods: {
-    loadInicialMedias () {
-      const user = firebase.auth().currentUser
-      if (user) {
-        this.$store.dispatch('setUser', user)
-        mediaService.getMyMedias(user)
-          .then(response => {
-            if (response.ok) {
-              let myMedias = []
-              for (var i in response.data) {
-                myMedias.push(response.data[i])
-              }
-              this.$store.dispatch('listMyMedias', myMedias)
-              this.$store.dispatch('defineSuggestions')
-            }
-          })
-          .catch(error => {
-            alert(error)
-            console.log('Error', error)
-          })
-      }
-    }
+    appService.loadInicialMedias()
   }
 }
 </script>

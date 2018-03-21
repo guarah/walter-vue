@@ -106,7 +106,7 @@
         this.$store.dispatch('clearSearchedMedias')
       },
       onSelectedList (event) {
-        this.go('ListView', event)
+        this.go('MediaList', event)
       }
     }
 }
