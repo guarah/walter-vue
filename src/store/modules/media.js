@@ -1,13 +1,16 @@
 import * as mediaService from '../../app/media/MediaService'
 const state = {
+  // search module
   searchedMedias: [],
   suggestions: [],
+  // search module
   myMedias: [],
   rewatchMedias: [],
   selectedMedia: null
 }
 
 const mutations = {
+  // search module
   'DEFINE_SUGGESTIONS' (state, suggestions) {
     state.suggestions = suggestions
   },
