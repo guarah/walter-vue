@@ -1,6 +1,6 @@
 import store from './store/store'
 import firebase from 'firebase'
-import * as mediaService from './app/media/MediaService.js'
+import * as mediaService from './store/modules/media/mediaService'
 
 function loadInicialMedias () {
   const user = firebase.auth().currentUser
@@ -13,8 +13,8 @@ function loadInicialMedias () {
           for (var i in response.data) {
             myMedias.push(response.data[i])
           }
-          store.dispatch('listMyMedias', myMedias)
-          store.dispatch('defineSuggestions')
+          store.dispatch('media/listMyMedias', myMedias)
+          store.dispatch('media/search/defineSuggestions')
         }
       })
       .catch(error => {

@@ -7,7 +7,7 @@
 
         <div class="search-bar">
           <v-text-field class="search-input" label="Search for series, movies..." v-model="searchText"></v-text-field>
-          <v-btn v-if="searchedMedias.length > 0" @click="clearSearchedMedias" class="search-close" flat icon color="black">
+          <v-btn v-if="searchedMedias && searchedMedias.length > 0" @click="clearSearchedMedias" class="search-close" flat icon color="black">
             <v-icon>close</v-icon>
           </v-btn>
         </div>
@@ -15,7 +15,7 @@
       </div>
 
       <media-list
-        v-if="searchView"
+        v-if="searchedMedias && searchView"
         listId="searchedMedias"
         title="Results..."
         :medias="searchedMedias"
@@ -23,7 +23,7 @@
       />
 
       <media-list
-        v-if="!searchView && suggestions.length > 0"
+        v-if="!searchView && suggestions"
         listId="suggestions"
         title="Suggested"
         :medias="suggestions"
@@ -31,7 +31,7 @@
       />
 
       <media-list
-        v-if="myMedias.length > 0"
+        v-if="myMedias"
         listId="myMedias"
         title="My list"
         :medias="myMedias"
@@ -39,7 +39,7 @@
       />
 
       <media-list
-        v-if="rewatchMedias.length > 0"
+        v-if="rewatchMedias"
         listId="rewatchMedias"
         title="Watch again"
         :medias="rewatchMedias"
@@ -72,38 +72,38 @@
         if (value.length > 3) {
           this.time = setTimeout(() => {
             console.log('waiting')
-            this.$store.dispatch('searchMedias', value)
+            this.$store.dispatch('media/search/searchMedias', value)
           }, 1000)
         }
       }
     },
     computed: {
       searchedMedias () {
-        return this.$store.getters.searchedMedias
+        return this.$store.getters['media/search/searchedMedias']
       },
       suggestions () {
-        return this.$store.getters.suggestions
+        return this.$store.getters['media/search/suggestions']
       },
       myMedias () {
-        return this.$store.getters.myMedias
+        return this.$store.getters['media/myMedias']
       },
       rewatchMedias () {
-        return this.$store.getters.rewatchMedias
+        return this.$store.getters['media/rewatchMedias']
       },
       user () {
         return this.$store.getters.user
       },
       searchView () {
-        return this.searchedMedias.length > 0
+        return this.searchedMedias && this.searchedMedias.length > 0
       },
       selectedMedia () {
-        return this.$store.getters.selectedMedia
+        return this.$store.getters['media/selectedMedia']
       }
     },
     methods: {
       clearSearchedMedias () {
         this.searchText = ''
-        this.$store.dispatch('clearSearchedMedias')
+        this.$store.dispatch('media/search/clearSearchedMedias')
       },
       onSelectedList (event) {
         this.go('MediaList', event)

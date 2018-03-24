@@ -23,7 +23,7 @@ export default {
       return this.$store.getters.user
     },
     selectedMedia () {
-      return this.$store.getters.selectedMedia
+      return this.$store.getters['media/selectedMedia']
     }
   },
   created () {

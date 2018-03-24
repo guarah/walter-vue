@@ -54,7 +54,7 @@ export default {
   },
   computed: {
     selectedMedia () {
-      return this.$store.getters.selectedMedia
+      return this.$store.getters['media/selectedMedia']
     }
   },
   methods: {

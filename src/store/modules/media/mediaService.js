@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { API_TMDB_KEY } from '../../lib/constants'
+import { API_TMDB_KEY } from '../../../lib/constants'
 
 function getMyMedias (user) {
   return new Promise((resolve, reject) => {
