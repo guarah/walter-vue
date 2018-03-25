@@ -23,7 +23,7 @@ export default {
   methods: {
     logout () {
       firebase.auth().signOut().then(() => {
-        this.$store.dispatch('unsetUser')
+        this.$store.dispatch('user/unsetUser')
         this.$router.replace('Auth')
       }, (error) => {
         console.log(error)

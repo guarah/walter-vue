@@ -1,9 +1,9 @@
-import Vue from 'vue'
 import { API_TMDB_KEY } from '../../../lib/constants'
+import { http } from '../../apiService'
 
 function getMyMedias (user) {
   return new Promise((resolve, reject) => {
-    Vue.http.get(`${user.uid}/addedMedias.json`)
+    http.get(`${user.uid}/addedMedias.json`)
       .then(response => resolve(response))
       .catch(error => reject(error))
   })
@@ -11,7 +11,7 @@ function getMyMedias (user) {
 
 function addToList (user, media) {
   return new Promise((resolve, reject) => {
-    Vue.http.put(`${user.uid}/addedMedias/${media.id}.json`, media)
+    http.put(`${user.uid}/addedMedias/${media.id}.json`, media)
       .then(response => resolve(response))
       .catch(error => reject(error))
   })
@@ -19,7 +19,7 @@ function addToList (user, media) {
 
 function removeFromList (user, media) {
   return new Promise((resolve, reject) => {
-    Vue.http.delete(`${user.uid}/addedMedias/${media.id}.json`, media)
+    http.delete(`${user.uid}/addedMedias/${media.id}.json`, media)
       .then(response => resolve(response))
       .catch(error => reject(error))
   })

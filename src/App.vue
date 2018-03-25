@@ -20,7 +20,7 @@ export default {
   },
   computed: {
     user () {
-      return this.$store.getters.user
+      return this.$store.getters['user/user']
     },
     selectedMedia () {
       return this.$store.getters['media/selectedMedia']

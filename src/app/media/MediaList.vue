@@ -46,7 +46,7 @@
     },
     methods: {
       selectMedia (media) {
-        this.$store.dispatch('selectMedia', media)
+        this.$store.dispatch('media/selectMedia', media)
       },
       selectList () {
         this.$emit('selectedList', {listGetter: this.listId, title: this.title})

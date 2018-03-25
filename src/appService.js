@@ -5,10 +5,10 @@ import * as mediaService from './store/modules/media/mediaService'
 function loadInicialMedias () {
   const user = firebase.auth().currentUser
   if (user) {
-    store.dispatch('setUser', user)
+    store.dispatch('user/setUser', user)
     mediaService.getMyMedias(user)
       .then(response => {
-        if (response.ok) {
+        if (response.statusText === 'OK') {
           let myMedias = []
           for (var i in response.data) {
             myMedias.push(response.data[i])

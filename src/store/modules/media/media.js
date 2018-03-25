@@ -62,13 +62,13 @@ const actions = {
 
   setRewatchMedias: () => {},
 
-  addToList: ({commit, getters}, media) => {
+  addToList: ({commit, getters, rootGetters}, media) => {
     media.added = true
-    const user = getters.user
+    const user = rootGetters['user/user']
     if (user) {
       mediaService.addToList(user, media)
         .then(response => {
-          if (response.ok) commit(ADD_TO_LIST, media)
+          if (response.statusText === 'OK') commit(ADD_TO_LIST, media)
         })
         .catch(error => {
           console.log('Error', error)
@@ -77,12 +77,12 @@ const actions = {
     }
   },
 
-  removeFromList: ({commit, getters}, media) => {
-    const user = getters.user
+  removeFromList: ({commit, getters, rootGetters}, media) => {
+    const user = rootGetters['user/user']
     if (user) {
       mediaService.removeFromList(user, media)
         .then(response => {
-          if (response.ok) commit('REMOVE_FROM_LIST', media)
+          if (response.statusText === 'OK') commit('REMOVE_FROM_LIST', media)
         })
         .catch(error => {
           console.log('Error', error)
