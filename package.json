@@ -17,6 +17,8 @@
     "axios": "^0.18.0",
     "firebase": "^4.6.2",
     "firebase-tools": "^3.17.7",
+    "global": "^4.3.2",
+    "travis": "^0.1.1",
     "vue": "^2.5.2",
     "vue-awesome": "^2.3.5",
     "vue-router": "^3.0.1",
