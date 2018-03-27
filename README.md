@@ -1,5 +1,7 @@
 # walter
 
+[![Build Status](https://travis-ci.com/guarah/walter-vue.svg?token=qDttYRmoVupzqJyosxx8&branch=master)](https://travis-ci.com/guarah/walter-vue)
+
 > waler app made with vue
 
 ## Build Setup
