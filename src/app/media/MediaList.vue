@@ -31,10 +31,6 @@
         required: false,
         default: null
       },
-      listId: {
-        type: String,
-        required: true
-      },
       mode: {
         type: String,
         required: false,
@@ -48,10 +44,14 @@
       selectMedia (media) {
         this.$store.dispatch('media/selectMedia', media)
       },
-      selectList () {
-        this.$emit('selectedList', {listGetter: this.listId, title: this.title})
+      selectList () { // ONLY for mini mode - open the full mode
+        this.$emit('selectedList', {
+          mode: 'full',
+          title: this.title,
+          medias: this.medias
+        })
       },
-      close () {
+      close () { // ONLY for full mode - close the view
         this.$router.go(-1)
       }
     },
@@ -79,7 +79,7 @@
 
   .list-close {
     position: absolute;
-    top: 90px;
+    top: 70px;
     right: 0;
   }
 </style>

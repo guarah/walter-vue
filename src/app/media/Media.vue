@@ -18,7 +18,11 @@
 
 <script>
   export default {
-    props: ['media']
+    props: {
+      media: {
+        type: Object
+      }
+    }
   }
 </script>
 
