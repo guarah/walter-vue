@@ -2,20 +2,22 @@
   <div class="home">
 
     <div>
-      <div class="first">
+
+      <div v-if="user" class="first">
         <h2>Welcome, {{user.displayName}}!</h2>
 
         <div class="search-bar">
           <v-text-field class="search-input" label="Search for series, movies..." v-model="searchText"></v-text-field>
           <v-btn v-if="searchedMedias && searchedMedias.length > 0" @click="clearSearchedMedias" class="search-close" flat icon color="black">
-            <v-icon>close</v-icon>
+            <v-progress-circular v-if="searching" indeterminate color="primary"></v-progress-circular>
+            <v-icon v-else>close</v-icon>
           </v-btn>
         </div>
-
       </div>
+      <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
 
       <media-list
-        v-if="searchedMedias && searchView"
+        v-if="searchView && searchedMedias && searchedMedias.length > 0"
         listId="searchedMedias"
         title="Results..."
         :medias="searchedMedias"
@@ -23,28 +25,31 @@
       />
 
       <media-list
-        v-if="!searchView && suggestions"
+        v-if="!searchView && suggestions && suggestions.length > 0"
         listId="suggestions"
         title="Suggested"
         :medias="suggestions"
         @selectedList="onSelectedList($event)"
       />
+      <v-progress-circular v-else-if="suggestionsLoading" indeterminate color="primary"></v-progress-circular>
 
       <media-list
-        v-if="myMedias"
+        v-if="myMedias && myMedias.length > 0"
         listId="myMedias"
         title="My list"
         :medias="myMedias"
         @selectedList="onSelectedList($event)"
       />
+      <v-progress-circular v-else-if="myMediasLoading" indeterminate color="primary"></v-progress-circular>
 
       <media-list
-        v-if="rewatchMedias"
+        v-if="rewatchMedias && rewatchMedias.length > 0"
         listId="rewatchMedias"
         title="Watch again"
         :medias="rewatchMedias"
         @selectedList="onSelectedList($event)"
       />
+
     </div>
 
   </div>
@@ -73,7 +78,7 @@
           this.time = setTimeout(() => {
             console.log('waiting')
             this.$store.dispatch('media/search/searchMedias', value)
-          }, 1000)
+          }, 500)
         }
       }
     },
@@ -91,13 +96,24 @@
         return this.$store.getters['media/rewatchMedias']
       },
       user () {
-        return this.$store.getters.user
+        return this.$store.getters['user/user']
       },
       searchView () {
         return this.searchedMedias && this.searchedMedias.length > 0
       },
       selectedMedia () {
         return this.$store.getters['media/selectedMedia']
+      },
+      searching () {
+        return this.$store.getters['media/search/searching']
+      },
+
+      suggestionsLoading () {
+        return this.$store.getters['media/search/suggestionsLoading']
+      },
+
+      myMediasLoading () {
+        return this.$store.getters['media/myMediasLoading']
       }
     },
     methods: {

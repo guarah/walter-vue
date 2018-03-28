@@ -1,7 +1,9 @@
 import {
   SET_MY_MEDIAS,
+  SET_MY_MEDIAS_LOADING,
   SET_REWATCH_MEDIAS,
   ADD_TO_LIST,
+  ADD_TO_LIST_LOADING,
   REMOVE_FROM_LIST,
   SELECT_MEDIA,
   UNSELECT_MEDIA,
@@ -9,9 +11,12 @@ import {
   UNSET_WATCHED
 } from './../../mutation-types'
 import * as mediaService from './mediaService'
+import firebase from 'firebase'
 
 const state = {
   myMedias: [],
+  myMediasLoading: false,
+  addToListLoading: false,
   rewatchMedias: [],
   selectedMedia: null
 }
@@ -19,6 +24,10 @@ const state = {
 const mutations = {
   [SET_MY_MEDIAS] (state, medias) {
     state.myMedias = medias
+  },
+
+  [SET_MY_MEDIAS_LOADING] (state, value) {
+    state.myMediasLoading = value
   },
 
   [SET_REWATCH_MEDIAS] (state, medias) {
@@ -30,6 +39,10 @@ const mutations = {
     if (!stored) {
       state.myMedias.unshift(media)
     }
+  },
+
+  [ADD_TO_LIST_LOADING] (state, value) {
+    state.addToListLoading = value
   },
 
   [REMOVE_FROM_LIST] (state, media) {
@@ -56,18 +69,45 @@ const mutations = {
 }
 
 const actions = {
-  listMyMedias: ({commit}, medias) => {
-    commit(SET_MY_MEDIAS, medias)
+  listMyMedias: ({commit, dispatch}, medias) => {
+    commit(SET_MY_MEDIAS_LOADING, true)
+    const user = firebase.auth().currentUser
+    if (user) {
+      user.getIdToken()
+        .then((token) => {
+          user.token = token
+          dispatch('user/setUser', user, {root: true})
+          mediaService.getMyMedias(user)
+            .then(response => {
+              if (response.statusText === 'OK') {
+                let myMedias = []
+                for (var i in response.data) {
+                  myMedias.push(response.data[i])
+                }
+                commit(SET_MY_MEDIAS_LOADING, false)
+                commit(SET_MY_MEDIAS, myMedias)
+                dispatch('media/search/defineSuggestions', null, {root: true})
+              }
+            })
+            .catch(error => {
+              alert(error)
+              console.log('Error', error)
+            })
+        })
+        .catch(err => console.log(err))
+    }
   },
 
   setRewatchMedias: () => {},
 
   addToList: ({commit, getters, rootGetters}, media) => {
+    commit(ADD_TO_LIST_LOADING, true)
     media.added = true
     const user = rootGetters['user/user']
     if (user) {
       mediaService.addToList(user, media)
         .then(response => {
+          commit(ADD_TO_LIST_LOADING, false)
           if (response.statusText === 'OK') commit(ADD_TO_LIST, media)
         })
         .catch(error => {
@@ -78,10 +118,12 @@ const actions = {
   },
 
   removeFromList: ({commit, getters, rootGetters}, media) => {
+    commit(ADD_TO_LIST_LOADING, true)
     const user = rootGetters['user/user']
     if (user) {
       mediaService.removeFromList(user, media)
         .then(response => {
+          commit(ADD_TO_LIST_LOADING, false)
           if (response.statusText === 'OK') commit('REMOVE_FROM_LIST', media)
         })
         .catch(error => {
@@ -107,13 +149,13 @@ const actions = {
 }
 
 const getters = {
-  myMedias: state => {
-    return state.myMedias
-  },
+  myMedias: state => state.myMedias,
 
-  rewatchMedias: state => {
-    return state.rewatchMedias
-  },
+  myMediasLoading: state => state.myMediasLoading,
+
+  addToListLoading: state => state.addToListLoading,
+
+  rewatchMedias: state => state.rewatchMedias,
 
   selectedMedia: state => state.selectedMedia
 }

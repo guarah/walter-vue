@@ -3,7 +3,7 @@ import { http } from '../../apiService'
 
 function getMyMedias (user) {
   return new Promise((resolve, reject) => {
-    http.get(`${user.uid}/addedMedias.json`)
+    http.get(`${user.uid}/addedMedias.json?auth=${user.token}`)
       .then(response => resolve(response))
       .catch(error => reject(error))
   })
@@ -11,7 +11,7 @@ function getMyMedias (user) {
 
 function addToList (user, media) {
   return new Promise((resolve, reject) => {
-    http.put(`${user.uid}/addedMedias/${media.id}.json`, media)
+    http.put(`${user.uid}/addedMedias/${media.id}.json?auth=${user.token}`, media)
       .then(response => resolve(response))
       .catch(error => reject(error))
   })
@@ -19,7 +19,7 @@ function addToList (user, media) {
 
 function removeFromList (user, media) {
   return new Promise((resolve, reject) => {
-    http.delete(`${user.uid}/addedMedias/${media.id}.json`, media)
+    http.delete(`${user.uid}/addedMedias/${media.id}.json?auth=${user.token}`, media)
       .then(response => resolve(response))
       .catch(error => reject(error))
   })
