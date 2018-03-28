@@ -19,26 +19,24 @@
 
       <p class="description">{{selectedMedia.description}}</p>
 
-      <div class="media-buttons">
+    </div>
 
-        <div class="media-button">
-          <v-btn flat color="white" @click="updateList(selectedMedia)">
-            <v-icon v-if="selectedMedia.added">check</v-icon>
-            <v-icon v-else>add</v-icon>
-            My list
-          </v-btn>
-        </div>
-
-        <div class="media-button">
-          <v-btn flat color="white">
-            <v-icon v-if="selectedMedia.watched">check</v-icon>
-            <v-icon v-else>add</v-icon>
-            Watched
-          </v-btn>
-        </div>
-
+    <div class="media-buttons">
+      <div class="media-button">
+        <v-btn flat color="white" @click="updateList(selectedMedia)">
+          <v-progress-circular v-if="addToListLoading" indeterminate :size="24" color="white"></v-progress-circular>
+          <v-icon v-else-if="selectedMedia.added">check</v-icon>
+          <v-icon v-else>add</v-icon>
+          My list
+        </v-btn>
       </div>
-
+      <div class="media-button">
+        <v-btn flat color="white">
+          <v-icon v-if="selectedMedia.watched">check</v-icon>
+          <v-icon v-else>add</v-icon>
+          Watched
+        </v-btn>
+      </div>
     </div>
 
   </div>
@@ -55,17 +53,22 @@ export default {
   computed: {
     selectedMedia () {
       return this.$store.getters['media/selectedMedia']
+    },
+
+    addToListLoading () {
+      return this.$store.getters['media/addToListLoading']
     }
   },
   methods: {
     close () {
-      this.$store.dispatch('unSelectMedia')
+      this.$store.dispatch('media/unSelectMedia')
     },
+
     updateList (media) {
       if (media.added) {
-        this.$store.dispatch('removeFromList', media)
+        this.$store.dispatch('media/removeFromList', media)
       } else {
-        this.$store.dispatch('addToList', media)
+        this.$store.dispatch('media/addToList', media)
       }
     }
   }
@@ -119,8 +122,21 @@ export default {
     margin-top: -7px;
   }
 
+  .media-info {
+    padding-bottom: 48px;
+  }
+
   .media-info .description {
     text-align: justify;
+  }
+
+  .media-buttons {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #000000;
+    text-align: center;
+    box-shadow: 0px 2px 4px 1px #716c6c;
   }
 
   .media-button {
