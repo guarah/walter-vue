@@ -46,7 +46,7 @@ const router = new VueRouter({
         default: MediaList,
         modal: MediaDetail
       },
-      props: true,
+      props: { default: true, modal: false },
       meta: { requiresAuth: true }
     }
   ]
@@ -58,7 +58,11 @@ router.beforeEach((to, from, next) => {
   let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
   if (requiresAuth && !currentUser) next('auth')
+
   else if (to.name === 'Auth' && currentUser) next('home')
+
+  else if (to.name === 'MediaList' && !to.params.medias) next('home')
+
   else next()
 })
 

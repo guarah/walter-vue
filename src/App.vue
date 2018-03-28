@@ -1,17 +1,16 @@
 <template>
   <div id="app">
     <v-app>
-      <app-bar :user="user" :class="{'blur-style': selectedMedia}"/>
-      <v-content>
+      <app-bar :user="user" class="app-bar" :class="{'blur-style': selectedMedia}"/>
+      <v-content class="content">
         <router-view :class="{'blur-style': selectedMedia}"></router-view>
-        <router-view v-if="selectedMedia" name="modal"></router-view>
+        <router-view class="modal" v-if="selectedMedia" name="modal"></router-view>
       </v-content>
     </v-app>
   </div>
 </template>
 
 <script>
-import * as appService from './appService'
 import AppBar from './app/appBar/AppBar'
 
 export default {
@@ -27,7 +26,7 @@ export default {
     }
   },
   created () {
-    appService.loadInicialMedias()
+    this.$store.dispatch('media/listMyMedias')
   }
 }
 </script>
@@ -60,6 +59,19 @@ main {
   filter: url(#blur-filter);
   -webkit-filter: blur(3px);
   filter: blur(3px);
+}
+
+.app-bar {
+  position: fixed;
+  z-index: 1;
+}
+
+.content {
+  padding-top: 34px !important;
+}
+
+.modal {
+  z-index: 2;
 }
 
 </style>
