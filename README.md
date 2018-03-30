@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/guarah/walter-vue.svg?token=qDttYRmoVupzqJyosxx8&branch=master)](https://travis-ci.com/guarah/walter-vue)
 
-Walter - A app for managing series and movies lists.
+Walter - An app for managing series and movies lists.
 
 It's a WIP project for testing and learning technologies like js, firebase, vuejs, and other frontend stuff.
 
