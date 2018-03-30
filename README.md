@@ -1,32 +1,17 @@
-# walter
+# Walter
 
 [![Build Status](https://travis-ci.com/guarah/walter-vue.svg?token=qDttYRmoVupzqJyosxx8&branch=master)](https://travis-ci.com/guarah/walter-vue)
 
-> waler app made with vue
+Walter - A app for managing series and movies lists.
 
-## Build Setup
+It's a WIP project for testing and learning technologies like js, firebase, vuejs, and other frontend stuff.
 
-``` bash
-# install dependencies
-npm install
+You can access and use the app at <a href="https://walter-vue.firebaseapp.com/home" target="_blank">Walter</a>
 
-# serve with hot reload at localhost:8080
-npm run dev
+## Contributing
 
-# build for production with minification
-npm run build
+Soon
 
-# build for production and view the bundle analyzer report
-npm run build --report
+## License
 
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
