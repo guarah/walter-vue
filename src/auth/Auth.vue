@@ -27,8 +27,10 @@
       facebookLogin () {
         const provider = new firebase.auth.FacebookAuthProvider()
         provider.setCustomParameters({
-          'display': 'popup'
+          prompt: 'select_account'
         })
+        provider.addScope('profile')
+        provider.addScope('email')
         // firebase.auth().signInWithPopup(provider)
         firebase.auth().signInWithRedirect(provider)
       },
