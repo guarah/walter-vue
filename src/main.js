@@ -36,10 +36,10 @@ firebase.auth().onAuthStateChanged((user) => {
 })
 
 // Spaced string to camel case 'The camel case' => 'theCamelCase'
-    String.prototype.toCamelCase = function() {
-        return this.split(' ')
-            .reduce(function(acc, val, index) {
-                return acc += !index ? val.replace(val[0], val[0].toLowerCase())
-                    : val.replace(val[0], val[0].toUpperCase());
-            }, '').replace(/\s/g, '');
-    };
+// String.prototype.toCamelCase = function() {
+//   return this.split(' ')
+//       .reduce(function(acc, val, index) {
+//           return acc += !index ? val.replace(val[0], val[0].toLowerCase())
+//               : val.replace(val[0], val[0].toUpperCase());
+//       }, '').replace(/\s/g, '');
+// };
