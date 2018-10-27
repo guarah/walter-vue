@@ -36,8 +36,8 @@ const mutations = {
     state.searching = value
   },
 
-  [NO_RESULTS] (state) {
-    state.noResults = true
+  [NO_RESULTS] (state, value = true) {
+    state.noResults = value
   }
 }
 
@@ -47,6 +47,7 @@ const actions = {
     mediaService.search(searchValue)
       .then(medias => {
         if (medias === NO_RESULTS) {
+          commit(CLEAR_SEARCHED_MEDIAS)
           commit(SET_SEARCHING, false)
           commit(NO_RESULTS)
           return
@@ -76,8 +77,8 @@ const actions = {
     })
   },
 
-  noResults (context) {
-    context.commit(NO_RESULTS)
+  noResults (context, value) {
+    context.commit(NO_RESULTS, value)
   }
 }
 

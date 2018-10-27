@@ -7,8 +7,8 @@
         <h2>Welcome, {{user.displayName}}!</h2>
 
         <div class="search-bar">
-          <v-text-field class="search-input" label="Search for series, movies..." v-model="searchText"></v-text-field>
-          <v-btn v-if="searchedMedias && searchedMedias.length > 0" @click="clearSearchedMedias" class="search-close" flat icon color="black">
+          <v-text-field @keyup.8="clearSearchedMedias" class="search-input" label="Search for series, movies..." v-model="searchText"></v-text-field>
+          <v-btn v-if="searchText.length > 0" @click="clearSearchedMedias(true)" class="search-close" flat icon color="black">
             <v-progress-circular v-if="searching" indeterminate color="primary"></v-progress-circular>
             <v-icon v-else>close</v-icon>
           </v-btn>
@@ -26,7 +26,7 @@
       />
 
       <media-list
-        v-if="!searchView && suggestions && suggestions.length > 0"
+        v-if="!searchView && suggestions && suggestions.length > 0 && !noResults"
         listId="suggestions"
         title="Suggested"
         :medias="suggestions"
@@ -72,14 +72,14 @@
       }
     },
     watch: {
-      searchText (value) {
+      searchText (newValue, oldValue) {
         console.log('writing')
-
         if (this.time) clearTimeout(this.time)
-        if (value.length > 3) {
+        if (newValue < oldValue) return
+        if (newValue.length > 3) {
           this.time = setTimeout(() => {
             console.log('waiting')
-            this.$store.dispatch('media/search/searchMedias', value)
+            this.$store.dispatch('media/search/searchMedias', newValue)
           }, 500)
         }
       }
@@ -122,9 +122,12 @@
       }
     },
     methods: {
-      clearSearchedMedias () {
-        this.searchText = ''
+      clearSearchedMedias (clearText) {
+        if (clearText === true) {
+          this.searchText = ''
+        }
         this.$store.dispatch('media/search/clearSearchedMedias')
+        this.$store.dispatch('media/search/noResults', false)
       },
       onSelectedList (event) {
         this.go('MediaList', event)
