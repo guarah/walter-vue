@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-
     <div>
 
       <div v-if="user" class="first">
