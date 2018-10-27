@@ -3,7 +3,8 @@
     <v-btn v-if="mode === 'full'" dark @click="close" class="search-close list-close" flat icon color="black">
       <v-icon>close</v-icon>
     </v-btn>
-    <h1 @click="selectList">{{title}}</h1>
+    <h1 v-if="noResults">No results</h1>
+    <h1 v-else @click="selectList">{{title}}</h1>
     <div :class="{'list-style-mini': this.mode === 'mini'}">
       <media
         v-for="media in medias"
@@ -35,6 +36,11 @@
         type: String,
         required: false,
         default: 'mini'
+      },
+      noResults: {
+        type: Boolean,
+        required: false,
+        default: false
       }
     },
     components: {

@@ -3,14 +3,16 @@ import {
   CLEAR_SEARCHED_MEDIAS,
   DEFINE_SUGGESTIONS,
   SET_SUGGESTIONS_LOADING,
-  SET_SEARCHING
+  SET_SEARCHING,
+  NO_RESULTS
 } from './../../mutation-types'
 import * as mediaService from './mediaService'
 const state = {
   searchedMedias: [],
   suggestions: [],
   suggestionsLoading: false,
-  searching: false
+  searching: false,
+  noResults: false
 }
 
 const mutations = {
@@ -32,20 +34,30 @@ const mutations = {
 
   [SET_SEARCHING] (state, value) {
     state.searching = value
+  },
+
+  [NO_RESULTS] (state) {
+    state.noResults = true
   }
 }
 
 const actions = {
   searchMedias ({commit, rootGetters, dispatch}, searchValue) {
     commit(SET_SEARCHING, true)
-    mediaService.search(searchValue).then(medias => {
-      medias = medias && medias.map(m => {
-        m.added = !!rootGetters['media/myMedias'].find(x => x.id === m.id)
-        return m
+    mediaService.search(searchValue)
+      .then(medias => {
+        if (medias === NO_RESULTS) {
+          commit(SET_SEARCHING, false)
+          commit(NO_RESULTS)
+          return
+        }
+        medias = medias && medias.map(m => {
+          m.added = !!rootGetters['media/myMedias'].find(x => x.id === m.id)
+          return m
+        })
+        commit(SET_SEARCHING, false)
+        commit(SET_SEARCHED_MEDIAS, medias)
       })
-      commit(SET_SEARCHING, false)
-      commit(SET_SEARCHED_MEDIAS, medias)
-    })
   },
 
   clearSearchedMedias: ({commit}) => {
@@ -62,6 +74,10 @@ const actions = {
       commit(SET_SUGGESTIONS_LOADING, false)
       commit(DEFINE_SUGGESTIONS, medias)
     })
+  },
+
+  noResults (context) {
+    context.commit(NO_RESULTS)
   }
 }
 
@@ -77,7 +93,9 @@ const getters = {
 
   suggestionsLoading: (state) => state.suggestionsLoading,
 
-  searching: (state) => state.searching
+  searching: (state) => state.searching,
+
+  noResults: (state) => state.noResults
 }
 
 export default {

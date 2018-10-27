@@ -17,8 +17,9 @@
       <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
 
       <media-list
-        v-if="searchView && searchedMedias && searchedMedias.length > 0"
+        v-if="searchView || noResults"
         listId="searchedMedias"
+        :no-results="noResults"
         title="Results..."
         :medias="searchedMedias"
         @selectedList="onSelectedList($event)"
@@ -73,6 +74,7 @@
     watch: {
       searchText (value) {
         console.log('writing')
+
         if (this.time) clearTimeout(this.time)
         if (value.length > 3) {
           this.time = setTimeout(() => {
@@ -83,6 +85,9 @@
       }
     },
     computed: {
+      noResults () {
+        return this.$store.getters['media/search/noResults']
+      },
       searchedMedias () {
         return this.$store.getters['media/search/searchedMedias']
       },
@@ -99,7 +104,7 @@
         return this.$store.getters['user/user']
       },
       searchView () {
-        return this.searchedMedias && this.searchedMedias.length > 0
+        return (this.searchedMedias && this.searchedMedias.length > 0)
       },
       selectedMedia () {
         return this.$store.getters['media/selectedMedia']

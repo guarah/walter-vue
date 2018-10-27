@@ -1,5 +1,6 @@
 import { API_TMDB_KEY } from '../../../lib/constants'
 import { http } from '../../apiService'
+import { NO_RESULTS } from '../../mutation-types'
 
 function getMyMedias (user) {
   return new Promise((resolve, reject) => {
@@ -31,9 +32,11 @@ function search (searchText) {
     .then((response) => response.json())
     .then((responseJson) => {
       return new Promise((resolve, reject) => {
+        if (responseJson.total_results === 0) {
+          resolve(NO_RESULTS)
+        }
         const medias = transformMedias(responseJson)
         if (medias) resolve(medias)
-        reject(Error)
       })
     })
     .catch((error) => {
@@ -42,7 +45,7 @@ function search (searchText) {
 }
 
 function transformMedias (mediasJson) {
-  console.log(mediasJson)
+  console.log('oi', mediasJson)
   return mediasJson && mediasJson.results && mediasJson.results.length > 0 && mediasJson.results.filter(x => x.media_type !== 'person')
     .reduce((acc, val) => {
       const media = {
