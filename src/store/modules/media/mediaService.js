@@ -26,6 +26,22 @@ function removeFromList (user, media) {
   })
 }
 
+function setWatched (user, media) {
+  return new Promise((resolve, reject) => {
+    http.patch(`${user.uid}/addedMedias/${media.id}.json?auth=${user.token}`, { watched: true })
+      .then(response => resolve(response))
+      .catch(error => reject(error))
+  })
+}
+
+function unSetWatched (user, media) {
+  return new Promise((resolve, reject) => {
+    http.patch(`${user.uid}/addedMedias/${media.id}.json?auth=${user.token}`, { watched: false })
+      .then(response => resolve(response))
+      .catch(error => reject(error))
+  })
+}
+
 function search (searchText) {
   const query = searchText.replace('', '+')
   return fetch(`https://api.themoviedb.org/3/search/multi?page=1&api_key=${API_TMDB_KEY}&query=${query}`)
@@ -81,5 +97,7 @@ export {
   getMyMedias,
   removeFromList,
   search,
-  getSuggestions
+  getSuggestions,
+  setWatched,
+  unSetWatched
 }
