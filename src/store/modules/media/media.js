@@ -8,7 +8,8 @@ import {
   SELECT_MEDIA,
   UNSELECT_MEDIA,
   SET_WATCHED,
-  UNSET_WATCHED
+  UNSET_WATCHED,
+  SET_WATCHED_LOADING
 } from './../../mutation-types'
 import * as mediaService from './mediaService'
 import firebase from 'firebase'
@@ -17,6 +18,7 @@ const state = {
   myMedias: [],
   myMediasLoading: false,
   addToListLoading: false,
+  setWatchedLoading: false,
   rewatchMedias: [],
   selectedMedia: null
 }
@@ -45,6 +47,10 @@ const mutations = {
     state.addToListLoading = value
   },
 
+  [SET_WATCHED_LOADING] (state, value) {
+    state.setWatchedLoading = value
+  },
+
   [REMOVE_FROM_LIST] (state, media) {
     const _media = state.myMedias.find(x => x.id === media.id)
     if (_media) {
@@ -62,9 +68,19 @@ const mutations = {
   },
 
   [SET_WATCHED] (state, media) {
+    const _media = state.myMedias.find(x => x.id === media.id)
+    if (_media) {
+      media.watched = true
+      state.myMedias.splice(state.myMedias.indexOf(_media), 1, media)
+    }
   },
 
   [UNSET_WATCHED] (state, media) {
+    const _media = state.myMedias.find(x => x.id === media.id)
+    if (_media) {
+      media.watched = false
+      state.myMedias.splice(state.myMedias.indexOf(_media), 1, media)
+    }
   }
 }
 
@@ -140,11 +156,39 @@ const actions = {
     commit(UNSELECT_MEDIA)
   },
 
-  setWatched: ({commit}, media) => {
-    commit(SET_WATCHED, media)
+  setWatched: ({commit, rootGetters}, media) => {
+    commit(SET_WATCHED_LOADING, true)
+    media.watched = true
+    const user = rootGetters['user/user']
+    if (user) {
+      mediaService.setWatched(user, media)
+        .then(response => {
+          commit(SET_WATCHED_LOADING, false)
+          if (response.statusText === 'OK') commit(SET_WATCHED, media)
+        })
+        .catch(error => {
+          commit(SET_WATCHED_LOADING, false)
+          console.log('Error', error)
+          alert('error')
+        })
+    }
   },
-  unSetWatched: ({commit}, media) => {
-    commit(UNSET_WATCHED, media)
+  unSetWatched: ({commit, rootGetters}, media) => {
+    commit(SET_WATCHED_LOADING, true)
+    media.watched = false
+    const user = rootGetters['user/user']
+    if (user) {
+      mediaService.unSetWatched(user, media)
+        .then(response => {
+          commit(SET_WATCHED_LOADING, false)
+          if (response.statusText === 'OK') commit(UNSET_WATCHED, media)
+        })
+        .catch(error => {
+          commit(SET_WATCHED_LOADING, false)
+          console.log('Error', error)
+          alert('error')
+        })
+    }
   }
 }
 
@@ -154,6 +198,8 @@ const getters = {
   myMediasLoading: state => state.myMediasLoading,
 
   addToListLoading: state => state.addToListLoading,
+
+  setWatchedLoading: state => state.setWatchedLoading,
 
   rewatchMedias: state => state.rewatchMedias,
 

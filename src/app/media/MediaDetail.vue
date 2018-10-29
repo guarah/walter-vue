@@ -31,8 +31,9 @@
         </v-btn>
       </div>
       <div class="media-button">
-        <v-btn flat color="white">
-          <v-icon v-if="selectedMedia.watched">check</v-icon>
+        <v-btn flat color="white" @click="toggleWatched(selectedMedia)">
+          <v-progress-circular v-if="setWatchedLoading" indeterminate :size="24" color="white"></v-progress-circular>
+          <v-icon v-else-if="selectedMedia.watched">check</v-icon>
           <v-icon v-else>add</v-icon>
           Watched
         </v-btn>
@@ -57,6 +58,10 @@ export default {
 
     addToListLoading () {
       return this.$store.getters['media/addToListLoading']
+    },
+
+    setWatchedLoading () {
+      return this.$store.getters['media/setWatchedLoading']
     }
   },
   methods: {
@@ -69,6 +74,14 @@ export default {
         this.$store.dispatch('media/removeFromList', media)
       } else {
         this.$store.dispatch('media/addToList', media)
+      }
+    },
+
+    toggleWatched (media) {
+      if (media.watched) {
+        this.$store.dispatch('media/unSetWatched', media)
+      } else {
+        this.$store.dispatch('media/setWatched', media)
       }
     }
   }
