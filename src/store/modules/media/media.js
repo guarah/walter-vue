@@ -13,6 +13,7 @@ import {
 } from './../../mutation-types'
 import * as mediaService from './mediaService'
 import firebase from 'firebase'
+import Vue from 'vue'
 
 const state = {
   myMedias: [],
@@ -70,15 +71,24 @@ const mutations = {
   [SET_WATCHED] (state, media) {
     const _media = state.myMedias.find(x => x.id === media.id)
     if (_media) {
-      media.watched = true
-      state.myMedias.splice(state.myMedias.indexOf(_media), 1, media)
+      if (_media.hasOwnProperty('watched')) {
+        _media.watched = true
+        state.myMedias.splice(state.myMedias.indexOf(_media), 1, _media)
+      } else {
+        Vue.set(_media, 'watched', true)
+        state.myMedias.splice(state.myMedias.indexOf(_media), 1, media)
+      }
     }
   },
 
   [UNSET_WATCHED] (state, media) {
     const _media = state.myMedias.find(x => x.id === media.id)
     if (_media) {
-      media.watched = false
+      if (_media.hasOwnProperty('watched')) {
+        _media.watched = false
+        state.myMedias.splice(state.myMedias.indexOf(_media), 1, media)
+      }
+      Vue.set(_media, 'watched', false)
       state.myMedias.splice(state.myMedias.indexOf(_media), 1, media)
     }
   }
@@ -158,7 +168,6 @@ const actions = {
 
   setWatched: ({commit, rootGetters}, media) => {
     commit(SET_WATCHED_LOADING, true)
-    media.watched = true
     const user = rootGetters['user/user']
     if (user) {
       mediaService.setWatched(user, media)
@@ -175,7 +184,6 @@ const actions = {
   },
   unSetWatched: ({commit, rootGetters}, media) => {
     commit(SET_WATCHED_LOADING, true)
-    media.watched = false
     const user = rootGetters['user/user']
     if (user) {
       mediaService.unSetWatched(user, media)
