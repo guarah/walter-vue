@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "start": "node build/dev-server.js",
+    "start": "npm i && npm run build && superstatic ./dist --port 8080 --host 127.0.0.1",
     "build": "node build/build.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js",
     "e2e": "node test/e2e/runner.js",
