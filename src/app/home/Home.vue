@@ -1,6 +1,8 @@
 <template>
   <div class="home">
+
     <div>
+
       <div v-if="user" class="first">
         <h2>Welcome, {{user.displayName}}!</h2>
 
